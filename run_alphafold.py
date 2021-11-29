@@ -118,7 +118,7 @@ flags.DEFINE_boolean('use_precomputed_msas', False, 'Whether to read MSAs that '
                      'if the sequence, database or configuration have changed.')
 
 # CUSTOM
-flags.DEFINE_integer( 'n_recycle', 3, 'Number of recycling iterations' )
+flags.DEFINE_integer( 'n_recycles', 3, 'Number of recycling iterations' )
 
 FLAGS = flags.FLAGS
 
@@ -382,8 +382,11 @@ def main(argv):
       model_config.model.num_ensemble_eval = num_ensemble
     else:
       model_config.data.eval.num_ensemble = num_ensemble
-    model_config.data.common.num_recycle = int( FLAGS.n_recycle )
-    model_config.model.num_recycle = int( FLAGS.n_recycle )
+    
+    n_recycles = FLAGS.n_recycles
+    if not run_multimer_system:
+        model_config.data.common.num_recycle = n_recycles
+    model_config.model.num_recycle = n_recycles
     model_params = data.get_model_haiku_params(
         model_name=model_name, data_dir=FLAGS.data_dir)
     model_runner = model.RunModel(model_config, model_params)
