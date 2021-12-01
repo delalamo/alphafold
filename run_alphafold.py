@@ -119,6 +119,7 @@ flags.DEFINE_boolean('use_precomputed_msas', False, 'Whether to read MSAs that '
 
 # CUSTOM
 flags.DEFINE_integer( 'n_recycles', 3, 'Number of recycling iterations' )
+flags.DEFINE_integer( 'n_struct_module_layers', 8, 'Number of passes through the structure module' )
 
 FLAGS = flags.FLAGS
 
@@ -383,10 +384,15 @@ def main(argv):
     else:
       model_config.data.eval.num_ensemble = num_ensemble
     
-    n_recycles = FLAGS.n_recycles
+    # CUSTOM CODE
     if not run_multimer_system:
-        model_config.data.common.num_recycle = n_recycles
-    model_config.model.num_recycle = n_recycles
+        model_config.data.common.num_recycle = FLAGS.n_recycles
+        
+    model_config.model.heads.structure_module.num_layer = (
+        FLAGS.n_struct_module_layers )
+    model_config.model.num_recycle = FLAGS.n_recycles
+    
+    # END CUSTOM CODE
     model_params = data.get_model_haiku_params(
         model_name=model_name, data_dir=FLAGS.data_dir)
     model_runner = model.RunModel(model_config, model_params)
