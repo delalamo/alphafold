@@ -248,7 +248,7 @@ def predict_structure(
 
       # Save the relaxed PDB.
       relaxed_output_path = os.path.join(
-          output_dir, f'relaxed_{model_name}_{model_random_seed}.pdb')
+          output_dir, f'relaxed_{model_name}_{random_seed}.pdb')
       with open(relaxed_output_path, 'w') as f:
         f.write(relaxed_pdb_str)
 
