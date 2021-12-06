@@ -219,7 +219,7 @@ def predict_structure(
     ranking_confidences[model_name] = prediction_result['ranking_confidence']
 
     # Save the model outputs.
-    result_output_path = os.path.join(output_dir, f'result_{model_name}.pkl')
+    result_output_path = os.path.join(output_dir, f'result_{model_name}_{random_seed}.pkl')
     with open(result_output_path, 'wb') as f:
       pickle.dump(prediction_result, f, protocol=4)
 
@@ -234,7 +234,7 @@ def predict_structure(
         remove_leading_feature_dimension=not model_runner.multimer_mode)
 
     unrelaxed_pdbs[model_name] = protein.to_pdb(unrelaxed_protein)
-    unrelaxed_pdb_path = os.path.join(output_dir, f'unrelaxed_{model_name}.pdb')
+    unrelaxed_pdb_path = os.path.join(output_dir, f'unrelaxed_{model_name}_{random_seed}.pdb')
     with open(unrelaxed_pdb_path, 'w') as f:
       f.write(unrelaxed_pdbs[model_name])
 
@@ -248,7 +248,7 @@ def predict_structure(
 
       # Save the relaxed PDB.
       relaxed_output_path = os.path.join(
-          output_dir, f'relaxed_{model_name}.pdb')
+          output_dir, f'relaxed_{model_name}_{model_random_seed}.pdb')
       with open(relaxed_output_path, 'w') as f:
         f.write(relaxed_pdb_str)
 
