@@ -177,7 +177,7 @@ def _assess_hhsearch_hit(
     release_dates: Mapping[str, datetime.datetime],
     release_date_cutoff: datetime.datetime,
     max_subsequence_ratio: float = 0.95,
-    min_align_ratio: float = 0.1) -> bool:
+    min_align_ratio: float = 0.01) -> bool:
   """Determines if template is valid (without parsing the template mmcif file).
 
   Args:
