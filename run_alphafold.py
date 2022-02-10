@@ -397,7 +397,7 @@ def main(argv):
     model_config.model.num_recycle = FLAGS.n_recycles
     
     if FLAGS.max_msa_clusters > 0:
-      model_config..data.eval.max_msa_clusters = FLAGS.max_msa_clusters
+      model_config.data.eval.max_msa_clusters = FLAGS.max_msa_clusters
     if FLAGS.max_extra_msa > 0:
       cfg.data.common.max_extra_msa = FLAGS.max_extra_msa
     
