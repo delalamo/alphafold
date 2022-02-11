@@ -122,7 +122,7 @@ flags.DEFINE_integer( 'n_recycles', 3, 'Number of recycling iterations.' )
 flags.DEFINE_integer( 'n_struct_module_layers', 8, 'Number of passes through '
                       'the structure module.' )
 flags.DEFINE_integer( 'max_msa_clusters', 512, 'Number of MSA clusters.' )
-flags.DEFINE_integer( 'max_extra_msa', 5120, 'Number of extra sequences '
+flags.DEFINE_integer( 'max_extra_msa', 1024, 'Number of extra sequences '
                       'Used to compute ensemble statistics.' )
 
 FLAGS = flags.FLAGS
@@ -396,11 +396,17 @@ def main(argv):
         FLAGS.n_struct_module_layers )
     model_config.model.num_recycle = FLAGS.n_recycles
     
-    if FLAGS.max_msa_clusters > 0:
-      model_config.data.eval.max_msa_clusters = FLAGS.max_msa_clusters
-    if FLAGS.max_extra_msa > 0:
-      cfg.data.common.max_extra_msa = FLAGS.max_extra_msa
-    
+    if not run_multimer_system:
+      if FLAGS.max_msa_clusters > 0:
+        model_config.data.eval.max_msa_clusters = FLAGS.max_msa_clusters
+      if FLAGS.max_extra_msa > 0:
+        model_config.data.common.max_extra_msa = FLAGS.max_extra_msa
+    else:
+      if FLAGS.max_msa_clusters > 0:
+        model_config.model.embeddings_and_evoformer.num_msa = FLAGS.max_msa_clusters
+      if FLAGS.max_extra_msa > 0:
+        model_config.model.embeddings_and_evoformer.num_extra_msa = FLAGS.max_extra_msa
+
     # END CUSTOM CODE
     model_params = data.get_model_haiku_params(
         model_name=model_name, data_dir=FLAGS.data_dir)
